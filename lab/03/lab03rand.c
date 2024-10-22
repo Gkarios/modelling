@@ -10,6 +10,8 @@
 typedef struct
 {
     int status;
+    int infectionTime;
+    int immunityRand;
 } Computer;
 
 int main()
@@ -17,7 +19,7 @@ int main()
     Computer computers[NUM_COMPUTERS + 1];
     srand(time(NULL));
 
-    FILE *fp = fopen("lab03.txt", "w");
+    FILE *fp = fopen("lab03rand.txt", "w");
     if (fp == NULL)
     {
         perror("Unable to open file");
@@ -27,7 +29,11 @@ int main()
     for (int i = 1; i <= NUM_COMPUTERS; i++)
     {
         computers[i].status = HEALTHY;
+        computers[i].infectionTime = -1;
+        computers[i].immunityRand = -1;
     }
+
+    int currentTimestep;
 
     int timestep = 0;
     int immune = 0;
@@ -37,19 +43,34 @@ int main()
     int infected = 1;
     fprintf(fp, "%d %d\n", timestep, infected); 
     
-    while (immune >= NUM_COMPUTERS){
+    while (immune < NUM_COMPUTERS){
         timestep++;
-        //infectedNew to maintain the loop check rule
         int infectedNew = 0;
         for (int i = 0; i < infected; i++){
             int random = (rand() % NUM_COMPUTERS) + 1;
             if (computers[random].status == HEALTHY){
                 computers[random].status = INFECTED;
+                computers[random].infectionTime = timestep;
+                computers[random].immunityRand = rand() % 100;
                 infectedNew++;
             }
         }
-        //update infected, write at the end of timestep 
         infected += infectedNew;
+        for (int i=1; i<=NUM_COMPUTERS; i++){
+            if (computers[i].status == INFECTED){
+                if (computers[i].infectionTime == -1){
+                    computers[i].infectionTime = timestep;
+                }
+                int immunityRand = rand() % 100;
+                if (computers[i].status == INFECTED){
+                    if (timestep - computers[i].infectionTime >= computers[i].immunityRand){
+                        computers[i].status = IMMUNE;
+                        immune++;
+                        infected--;
+                    }
+                }
+            }            
+        }
         fprintf(fp, "%d %d\n", timestep, infected);
     }
     fclose(fp);

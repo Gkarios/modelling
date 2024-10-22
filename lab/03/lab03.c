@@ -10,6 +10,7 @@
 typedef struct
 {
     int status;
+    int infectionTime;
 } Computer;
 
 int main()
@@ -27,7 +28,10 @@ int main()
     for (int i = 1; i <= NUM_COMPUTERS; i++)
     {
         computers[i].status = HEALTHY;
+        computers[i].infectionTime = -1;
     }
+
+    int currentTimestep;
 
     int timestep = 0;
     int immune = 0;
@@ -37,9 +41,8 @@ int main()
     int infected = 1;
     fprintf(fp, "%d %d\n", timestep, infected); 
     
-    while (immune >= NUM_COMPUTERS){
+    while (immune < NUM_COMPUTERS){
         timestep++;
-        //infectedNew to maintain the loop check rule
         int infectedNew = 0;
         for (int i = 0; i < infected; i++){
             int random = (rand() % NUM_COMPUTERS) + 1;
@@ -48,8 +51,19 @@ int main()
                 infectedNew++;
             }
         }
-        //update infected, write at the end of timestep 
         infected += infectedNew;
+        for (int i=1; i<=NUM_COMPUTERS; i++){
+            if (computers[i].status == INFECTED){
+                if (computers[i].infectionTime == -1){
+                    computers[i].infectionTime = timestep;
+                }
+                if (timestep - computers[i].infectionTime >= 10){
+                    computers[i].status = IMMUNE;
+                    immune++;
+                    infected--;
+                }
+            }            
+        }
         fprintf(fp, "%d %d\n", timestep, infected);
     }
     fclose(fp);
