@@ -14,7 +14,7 @@ int main() {
     Computer computers[NUM_COMPUTERS + 1];
     srand(time(NULL));
 
-    FILE *fp = fopen("lab02b.csv", "w");
+    FILE *fp = fopen("lab02bstable0.4.csv", "w");
     if (fp == NULL) {
         perror("Unable to open file");
         return 1;
@@ -35,7 +35,7 @@ int main() {
     while (infected < NUM_COMPUTERS) {
         timestep++;
         int infectedNew = 0;
-        double beta = 1.0 - (0.03 * timestep); //β decreases linearly over time
+        double beta = 0.4; 
 
         for (int i = 0; i < infected; i++) {
             if ((double)rand() / RAND_MAX < beta) { 
