@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 100
+#define N 5
 #define UNSEEN 0
 #define SEEN 1
 
@@ -17,7 +17,7 @@ int main()
     Computer computers[NUM_COMPUTERS + 1];
     srand(time(NULL));
 
-    FILE *fp = fopen("lab04n=100.txt", "w");
+    FILE *fp = fopen("lab04n=5.txt", "w");
     if (fp == NULL)
     {
         perror("Unable to open file");
@@ -38,18 +38,14 @@ int main()
 
     if (informed < NUM_COMPUTERS)
     {
-        double beta = 0.3;
         while (informed < NUM_COMPUTERS)
         {
-            if ((double)rand() / RAND_MAX < beta)
-            {
                 int random = (rand() % NUM_COMPUTERS) + 1;
                 if (computers[random].status == UNSEEN)
                 {
                     computers[random].status = SEEN;
                     informed++;
                 }
-            }
             timestep++;
             α = (float)informed / NUM_COMPUTERS;
             fprintf(fp, "%d %.4f\n", timestep, α);

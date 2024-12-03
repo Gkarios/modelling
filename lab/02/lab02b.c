@@ -32,10 +32,10 @@ int main() {
     infected = 1;
     fprintf(fp, "%d %d\n", timestep, infected); 
     
-    while (infected < NUM_COMPUTERS) {
+    while (infected < NUM_COMPUTERS && timestep != 100) {
         timestep++;
         int infectedNew = 0;
-        double beta = 1.0 - (0.03 * timestep); //β decreases linearly over time
+        double beta = 1.0 - (0.04 * timestep); //β decreases linearly over time
 
         for (int i = 0; i < infected; i++) {
             if ((double)rand() / RAND_MAX < beta) { 
