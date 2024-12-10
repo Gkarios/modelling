@@ -14,9 +14,11 @@ typedef struct
 
 int main()
 {
+  //Make the network array
     Computer computers[NUM_COMPUTERS + 1];
     srand(time(NULL));
 
+    //write a file
     FILE *fp = fopen("lab03.txt", "w");
     if (fp == NULL)
     {
@@ -24,6 +26,7 @@ int main()
         return 1;
     }
 
+    //initialize computers
     for (int i = 1; i <= NUM_COMPUTERS; i++)
     {
         computers[i].status = HEALTHY;
@@ -39,7 +42,7 @@ int main()
     
     while (immune >= NUM_COMPUTERS){
         timestep++;
-        //infectedNew to maintain the loop check rule
+        //We define infectedNew to maintain the loop check rule
         int infectedNew = 0;
         for (int i = 0; i < infected; i++){
             int random = (rand() % NUM_COMPUTERS) + 1;

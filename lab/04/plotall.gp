@@ -9,7 +9,7 @@ set ylabel "Informed sensors"
 set grid
 
 # Set the x-axis range
-set xrange [0:5000]
+set xrange [0:9000]
 
 # Plot the data from the three CSV files with distinct colors
 plot "lab04b.txt" using 1:2 with lines linecolor rgb "#1f77b4" title "Informed sensor β = 1", \
