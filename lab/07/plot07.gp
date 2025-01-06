@@ -5,4 +5,4 @@ set xlabel "Timestep"
 set ylabel "Magnitude"
 set grid
 set xrange [0:100000]
-plot "results.csv" using 1:2 with lines title "Earthquake"
+plot "results0.001.csv" using 1:2 with lines title "Earthquake"

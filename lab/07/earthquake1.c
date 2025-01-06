@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define Fout 0.001
+#define Fout 0.01
 #define Fcrit 4.0
 #define N 10
 #define M 20
 
 int check_Fcrit(float current[N][M]);
-void reset_array_int(int array[N][M]); 
+void reset_array_int(int array[N][M]);
 void redistribute(float current[N][M], float next[N][M], int magnitude[N][M]);
 int count_magnitude(int magnitude[N][M]);
 void reset_array(float array[N][M]);
@@ -22,7 +22,7 @@ int main() {
     float current[N][M], next[N][M] = {0.0};
     int magnitude[N][M] = {0};
     int t = 0;
-    FILE *fp = fopen("results.csv", "w");
+    FILE *fp = fopen("results0.001.csv", "w");
 
     for (i = 0; i < N; i++) {
         for (j = 0; j < M; j++) {
@@ -46,10 +46,10 @@ int main() {
                 add_arrays(current, next);
                 reset_array(next);
             }while(check_Fcrit(current));
-            
+
             int earthquakeMagnitude = count_magnitude(magnitude);
             fprintf(fp, "%d, %d\n", t, earthquakeMagnitude);
-            
+
             reset_array_int(magnitude);
         }
     }
@@ -76,12 +76,12 @@ void redistribute(float current[N][M], float next[N][M], int magnitude[N][M]){
             float redistributedForce = 0.25*current[i][j];
             current[i][j] = 0.0;
             magnitude [i][j] = 1;
-            
+
             if (i>0) next[i-1][j] += redistributedForce;
             if (i<9) next[i+1][j] += redistributedForce;
             if (j>0) next[i][j-1] += redistributedForce;
             if (j<19) next[i][j+1] += redistributedForce;
-           } 
+           }
         }
     }
 }
